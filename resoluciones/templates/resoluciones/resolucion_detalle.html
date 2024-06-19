@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de Resolución</title>
+    <link rel="stylesheet" href="{% static 'admin/css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/css/changelists.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/css/widgets.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/css/responsive.css' %}">
+</head>
+<body class="app-{{ app_label }} model-{{ model_name }} change-list">
+    <div id="content-main">
+        <h1>Detalles de Resolución</h1>
+        <h2>Resolución: {{ resolucion.numero }}</h2>
+        <p>Fecha: {{ resolucion.fecha|date:"d-m-Y" }}</p>
+        <p>Sumario: {{ resolucion.sumario }}</p>
+        <p>Fecha de Publicación: {{ resolucion.fecha_publicacion|date:"d-m-Y" }}</p>
+        <p>Origen: {{ resolucion.get_origen_display }}</p>
+        <p>Observaciones: {{ resolucion.observaciones }}</p>
+        <p>Activo: {{ resolucion.activo }}</p>
+
+        <h3>Resoluciones Relacionadas</h3>
+        <table id="result_list">
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Fecha</th>
+                    <th>Sumario</th>
+                    <th>Fecha de Publicación</th>
+                    <th>Origen</th>
+                    <th>Observaciones</th>
+                    <th>Activo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for relacion in relacionadas %}
+                <tr class="{% cycle 'row1' 'row2' %}">
+                    <td>{{ relacion.res_dest.numero }}</td>
+                    <td>{{ relacion.res_dest.fecha|date:"d-m-Y" }}</td>
+                    <td>{{ relacion.res_dest.sumario }}</td>
+                    <td>{{ relacion.res_dest.fecha_publicacion|date:"d-m-Y" }}</td>
+                    <td>{{ relacion.res_dest.get_origen_display }}</td>
+                    <td>{{ relacion.res_dest.observaciones }}</td>
+                    <td>{{ relacion.res_dest.activo }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">No se encontraron resoluciones relacionadas.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'resoluciones_list' %}">Volver al listado</a>
+    </div>
+</body>
+</html>
+
+</html>
+

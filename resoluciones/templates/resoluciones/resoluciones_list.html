@@ -1,0 +1,84 @@
+<!-- resoluciones_list.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Resoluciones</title>
+    <link rel="stylesheet" href="{% static 'admin/css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/css/changelists.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/css/widgets.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/css/responsive.css' %}">
+    <style>
+        .checkbox-horizontal .form-check {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .form-row {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body class="app-{{ app_label }} model-{{ model_name }} change-list">
+    <div id="content-main">
+        <h1>Listado de Resoluciones</h1>
+        <form method="GET" class="form-search" autocomplete="off">
+            <div class="form-row">
+                <label for="id_numero">Número:</label>
+                {{ form.numero }}
+            </div>
+            <div class="form-row">
+                <label for="id_sumario">Sumario:</label>
+                {{ form.sumario }}
+            </div>
+            <div class="form-row">
+                <label for="id_fecha_publicacion">Fecha de Publicación:</label>
+                {{ form.fecha_publicacion }}
+            </div>
+            <div class="form-row">
+                <label for="id_observaciones">Observaciones:</label>
+                {{ form.observaciones }}
+            </div>
+            <div class="form-row">
+                <label for="id_origen">Origen:</label>
+                <div class="checkbox-horizontal">
+                    {{ form.origen }}
+                </div>
+            </div>
+            <button type="submit" class="button">Buscar</button>
+        </form>
+        <table id="result_list">
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Fecha</th>
+                    <th>Sumario</th>
+                    <th>Fecha de Publicación</th>
+                    <th>Origen</th>
+                    <th>Observaciones</th>
+                    <th>Activo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for resolucion in resoluciones %}
+                <tr class="{% cycle 'row1' 'row2' %}">
+                    <td><a href="{% url 'resolucion_detalle' resolucion.id %}">{{ resolucion.numero }}</a></td>
+                    <td>{{ resolucion.fecha|date:"d-m-Y" }}</td>
+                    <td>{{ resolucion.sumario }}</td>
+                    <td>{{ resolucion.fecha_publicacion|date:"d-m-Y" }}</td>
+                    <td>{{ resolucion.get_origen_display }}</td>
+                    <td>{{ resolucion.observaciones }}</td>
+                    <td>{{ resolucion.activo }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">No se encontraron resoluciones.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
